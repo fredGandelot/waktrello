@@ -1,6 +1,6 @@
 model.Board = new DataClass("Boards", "public");
 model.Board.ID = new Attribute("storage", "string", "key", {readOnly: true});
-model.Board.title = new Attribute("storage","string");
+model.Board.name = new Attribute("storage","string");
 model.Board.desc = new Attribute("storage","string");
 
 model.Member = new DataClass("Members", "public");
@@ -21,5 +21,4 @@ model.List.isClosed=new Attribute("storage","bool");
 model.List.idBoard=new Attribute("storage","string");
 model.List.isSubscribed=new Attribute("storage","bool");
 model.List.pos=new Attribute("storage","number");
-
-include('./controller.js')
+include("./controller.js")

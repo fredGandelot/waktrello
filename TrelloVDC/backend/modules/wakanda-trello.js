@@ -1,7 +1,7 @@
   
 //GET   (Read)
  
-
+ 
 exports.getBoards = function (appkey,token,username) {
 	var request='https://api.trello.com/1/members/'+username+'/boards?lists=open&list_fields=name&fields=name,desc&key='+appkey+'&token='+token ;
 	var xhr=new XMLHttpRequest();
@@ -65,4 +65,4 @@ exports.renameCard=function(appkey,token,idCard,value){
 }
 
 
-
+ 
