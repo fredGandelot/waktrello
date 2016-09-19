@@ -3,5 +3,15 @@
 	"type": "page",
 	"version": "1.0.0",
 	"loadDependencies": [
+		{
+			"package": "default"
+		},
+		{
+			"file": "styles/index.css"
+		},
+		{
+			"file": "prototype/application.css",
+			"path": "WEBFOLDER"
+		}
 	]
 }

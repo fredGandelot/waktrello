@@ -1,3 +1,4 @@
+
 model.Board = new DataClass("Boards", "public");
 model.Board.ID = new Attribute("storage", "string", "key", {readOnly: true});
 model.Board.name = new Attribute("storage","string");

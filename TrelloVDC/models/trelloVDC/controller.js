@@ -7,8 +7,9 @@ var wakTrello = require('wakanda-trello')
 
 //allEntities
 model.Board.controlMethods.allEntities = function(event) {
+	
     var elements = [];
-
+ 
 
     wakTrello.getBoards(appkey, token, username).forEach(function(item) {
         var elem = {};
@@ -17,14 +18,16 @@ model.Board.controlMethods.allEntities = function(event) {
         elem.desc = item.desc;
         elements.push(elem);
     });
-    console.log(elements);
+  
 
     event.collectionStorage.elements = elements;
-
+ 
 }
 //getCollectionLength
 model.Board.controlMethods.getCollectionLength = function(event) {
+	
     var collectionLength = event.collectionStorage.elements.length;
+    
     return collectionLength;
 };
 // getEntityByPos
@@ -40,14 +43,14 @@ model.Board.controlMethods.getEntityByPos = function(event) {
 
 // getAttributeValue
 model.Board.controlMethods.getAttributeValue = function(event) {
-if (event.attributeName === 'parent')
-	{
-		if (event.onlyLightValue)
-			return {deferred: true};
-		else
-			return ds.Folder(event.entityStorage.parentId);
-	}
-	else
+         
 		return event.entityStorage[event.attributeName];
+		
   
 };
+
+
+
+
+
+
