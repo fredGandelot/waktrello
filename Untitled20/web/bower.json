@@ -1,0 +1,17 @@
+{
+  "name": "Untitled20",
+  "version": "0.1.0",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.5.7",
+    "angular-wakanda": "~1.1.5",
+    "bootstrap-css": "~3.3.6"
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "dependencies": {
+    "brew": {
+      "name": "Brew",
+      "text": "Install Brew",
+      "optional": true,
+      "os": {
+        "mac": true
+      },
+      "command": "brew -v",
+      "troubleshooting": {
+        "app": "ios-app",
+        "step": 0
+      }
+    },
+    "xcode": {
+      "name": "Xcode",
+      "text": "Install Xcode",
+      "optional": true,
+      "os": {
+        "mac": true
+      },
+      "command": "xcodebuild -version",
+      "troubleshooting": {
+        "app": "ios-app",
+        "step": 1
+      }
+    },
+    "node": {
+      "name": "Node",
+      "command": "node -v",
+      "troubleshooting": {
+        "mac": {
+          "text": "Install Node.JS",
+          "app": "ios-app",
+          "step": 2
+        },
+        "windows": {
+          "app": "android-app",
+          "step": 0
+        }
+      }
+    },
+    "cordova": {
+      "name": "Cordova",
+      "text": "Install Cordova",
+      "command": "cordova -v",
+      "troubleshooting": {
+          "mac": {
+            "app": "ios-app",
+            "step": 3
+          },
+          "windows": {
+            "app": "android-app",
+            "step": 1
+          }
+      }
+    },
+    "ionic": {
+      "name": "Ionic",
+      "text": "Install Ionic",
+      "command": "ionic -v",
+      "troubleshooting": {
+        "mac": {
+          "app": "ios-app",
+          "step": 4
+        },
+        "windows": {
+          "app": "android-app",
+          "step": 2
+        }
+      }
+    },
+    "java": {
+      "name": "Java SDK",
+      "text": "Install Java SDK",
+      "command": {
+        "mac": "ls /Library/Java/JavaVirtualMachines | grep -E 'jdk'",
+        "windows": "where javac"
+      },
+      "troubleshooting": {
+          "mac": {
+            "app": "android-app",
+            "step": 4
+          },
+          "windows": {
+            "app": "android-app",
+            "step": 3
+          }
+      }
+    },
+    "java-home": {
+      "name": "Environment variable JAVA_HOME",
+      "text": "Configure the environment variable JAVA_HOME",
+      "os": {
+        "windows": true
+      },
+      "command": "echo %JAVA_HOME%",
+      "envVariable": "%JAVA_HOME%",
+      "troubleshooting": {
+        "app": "android-app",
+        "step": 3
+      }
+    },
+    "ant": {
+      "name": "Apache Ant",
+      "text": "Install Apache Ant",
+      "optional": true,
+      "command": "ant -version",
+      "troubleshooting": {
+          "mac": {
+            "app": "android-app",
+            "step": 5
+          },
+          "windows": {
+            "app": "android-app",
+            "step": 4
+          }
+      }
+    },
+    "android": {
+      "name": "Android SDK",
+      "text": "Install Android SDK",
+      "optional": true,
+      "command": "adb version",
+      "troubleshooting": {
+          "mac": {
+            "app": "android-app",
+            "step": 6
+          },
+          "windows": {
+            "app": "android-app",
+            "step": 5
+          }
+      }
+    },
+    "android-home": {
+      "name": "Environment variable ANDROID_HOME",
+      "text": "Configure the environment variable ANDROID_HOME",
+      "optional": true,
+      "command": "echo %ANDROID_HOME%",
+      "envVariable": "%ANDROID_HOME%",
+      "os": { 
+        "windows": true
+      },
+      "troubleshooting": {
+        "app": "android-app",
+        "step": 5
+      }
+    }
+  }
+}

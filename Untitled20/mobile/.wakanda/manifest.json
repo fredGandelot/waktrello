@@ -1,0 +1,10 @@
+{
+  "name": "Ionic blank template",
+  "description": "The basic mobile template for Ionic 1.<br>Perfect to get the grasp on Ionic. <a href='http://ionicframework.com/' target='_blank'>Learn more</a>",
+  "tags": [
+    "Ionic 1",
+    "Angular 1",
+    "Cordova",
+    "Gulp"
+  ]
+}

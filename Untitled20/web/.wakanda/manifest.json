@@ -1,0 +1,8 @@
+{
+  "name": "Angular basic template",
+  "description": "The basic mobile template for Angular 1. <a href='https://angularjs.org/' target='_blank'>Learn more</a>",
+  "tags": [
+    "Angular 1",
+    "Gulp"
+  ]
+}
