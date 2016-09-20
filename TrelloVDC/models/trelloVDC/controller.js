@@ -60,7 +60,7 @@ model.Board.controlMethods.orderBy = function(event) {
 
             if (s1[orderBy1.attname] < s2[orderBy1.attname])
                 return -1;
-            else if (s1[orderBy1.attname] == s2[orderBy1.attname]) {
+            else if (s1[orderBy1.attname] == s2[orderBy1.attname] &&orderBy2!=undefined) {
                 // if we have an ambiguity  we sort by the second attribute (in general ID)
                 if (orderBy2.ascending) {
 
@@ -77,7 +77,7 @@ model.Board.controlMethods.orderBy = function(event) {
         else {
             if (s2[orderBy1.attname] < s1[orderBy1.attname])
                 return -1;
-            else if (s2[orderBy1.attname] == s1[orderBy1.attname]) {
+            else if (s2[orderBy1.attname] == s1[orderBy1.attname] &&orderBy2!=undefined) {
                 if (orderBy2.ascending) {
 
                     if (s1[orderBy2.attname] < s2[orderBy2.attname]) {
@@ -96,4 +96,12 @@ model.Board.controlMethods.orderBy = function(event) {
     // Set sort entityCollection
     event.sortedCollectionStorage.elements = elements;
 
+
 };
+
+//Save Bundle  , we should implement  all the methods (4 methods) of Save bundle ( there is a dependency between the four methods )
+
+model.Board.controlMethods.newEntity=function(){
+	// nothing do do here,  already built by Wakanda
+}
+
