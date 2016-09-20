@@ -51,6 +51,16 @@ exports.createNewCard=function(appkey,token,idList,card){
  
 }
 
+exports.createNewBoard=function(appkey,token,board){
+	
+	var request='https://api.trello.com/1/boards?key='+appkey+'&token='+token+'&name='+board.name+'&desc='+board.desc;
+	var xhr=new XMLHttpRequest();
+    xhr.open('POST',request,true);
+    xhr.send();
+	return JSON.parse(xhr.responseText)
+	
+}
+
 // PUT   
 
 exports.renameCard=function(appkey,token,idCard,value){
@@ -63,6 +73,18 @@ exports.renameCard=function(appkey,token,idCard,value){
 	return JSON.parse(xhr.responseText)
 	
 }
+
+exports.renameBoard=function(appkey,token,idBoard,newName){
+	
+
+	var request='https://api.trello.com/1/board/'+idBoard+'/name'+'?key='+appkey+'&token='+token+'&value='+newName;
+	var xhr=new XMLHttpRequest();
+    xhr.open('PUT',request,true);
+    xhr.send();
+	return JSON.parse(xhr.responseText)
+	
+}
+
 
 
  

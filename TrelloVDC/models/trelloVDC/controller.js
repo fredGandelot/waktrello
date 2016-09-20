@@ -60,7 +60,7 @@ model.Board.controlMethods.orderBy = function(event) {
 
             if (s1[orderBy1.attname] < s2[orderBy1.attname])
                 return -1;
-            else if (s1[orderBy1.attname] == s2[orderBy1.attname] &&orderBy2!=undefined) {
+            else if (s1[orderBy1.attname] == s2[orderBy1.attname] && orderBy2 != undefined) {
                 // if we have an ambiguity  we sort by the second attribute (in general ID)
                 if (orderBy2.ascending) {
 
@@ -77,7 +77,7 @@ model.Board.controlMethods.orderBy = function(event) {
         else {
             if (s2[orderBy1.attname] < s1[orderBy1.attname])
                 return -1;
-            else if (s2[orderBy1.attname] == s1[orderBy1.attname] &&orderBy2!=undefined) {
+            else if (s2[orderBy1.attname] == s1[orderBy1.attname] && orderBy2 != undefined) {
                 if (orderBy2.ascending) {
 
                     if (s1[orderBy2.attname] < s2[orderBy2.attname]) {
@@ -101,7 +101,37 @@ model.Board.controlMethods.orderBy = function(event) {
 
 //Save Bundle  , we should implement  all the methods (4 methods) of Save bundle ( there is a dependency between the four methods )
 
-model.Board.controlMethods.newEntity=function(){
-	// nothing do do here,  already built by Wakanda
-}
+model.Board.controlMethods.newEntity = function() {
+    // nothing do do here,  already built by Wakanda
+};
+
+model.Board.controlMethods.setAttributeValue = function(event) {
+
+    event.entityStorage[event.attributeName] = event.value;
+
+};
+
+model.Board.controlMethods.saveEntity = function(event) {
+
+debugger;
+    var board = {
+            name: event.entityStorage[event.dataClass.attributes.name.name],
+            desc: event.entityStorage[event.dataClass.attributes.name.name]
+        }
+        // if ID = null we create a new card 
+    if (event.entityStorage[event.dataClass.attributes.ID.name] == null) {
+
+        wakTrello.createNewBoard(appkey, token, board)
+
+    }
+    // if ID not null we update an existing card
+    else {
+    	
+wakTrello.renameBoard(appkey,token,event.entityStorage[event.dataClass.attributes.ID.name],event.entityStorage[event.dataClass.attributes.name.name]);
+
+        
+    }
+};
+
+
 
