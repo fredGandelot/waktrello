@@ -8,13 +8,18 @@ var wakTrello = require('wakanda-trello')
 model.Board.controlMethods.allEntities = function(event) {
 
         var elements = [];
-        wakTrello.getBoards(appkey, token, username).forEach(function(item) {
-            var elem = {};
-            elem.ID = item.id;
-            elem.name = item.name;
-            elem.desc = item.desc;
-            elements.push(elem);
-        });
+        try {
+            wakTrello.getBoards(appkey, token, username).forEach(function(item) {
+                var elem = {};
+                elem.ID = item.id;
+                elem.name = item.name;
+                elem.desc = item.desc;
+                elements.push(elem);
+            });
+        }
+        catch (e) {
+            throw e;
+        }
 
         event.collectionStorage.elements = elements;
 
@@ -57,19 +62,23 @@ model.Board.controlMethods.orderBy = function(event) {
     // Sort entityCollection
     elements.sort(function(s1, s2) {
         if (orderBy1.ascending) {
+             
 
             if (s1[orderBy1.attname] < s2[orderBy1.attname])
                 return -1;
-            else if (s1[orderBy1.attname] == s2[orderBy1.attname] && orderBy2 != undefined) {
+            else if (s1[orderBy1.attname] == s2[orderBy1.attname]) {
                 // if we have an ambiguity  we sort by the second attribute (in general ID)
+                if(orderBy2!=undefined){
                 if (orderBy2.ascending) {
 
                     if (s1[orderBy2.attname] < s2[orderBy2.attname]) {
-                        return 1;
+                        return -1;
                     }
                     else
-                        return -1;
+                        return 1;
                 }
+                }
+                
             }
             else
                 return 1;
@@ -77,15 +86,17 @@ model.Board.controlMethods.orderBy = function(event) {
         else {
             if (s2[orderBy1.attname] < s1[orderBy1.attname])
                 return -1;
-            else if (s2[orderBy1.attname] == s1[orderBy1.attname] && orderBy2 != undefined) {
+            else if (s2[orderBy1.attname] == s1[orderBy1.attname]) {
+            	if(orderBy2!=undefined){
                 if (orderBy2.ascending) {
 
                     if (s1[orderBy2.attname] < s2[orderBy2.attname]) {
-                        return 1;
+                        return -1;
                     }
                     else
-                        return -1;
+                        return 1;
                 }
+            }
             }
             else
                 return 1;
@@ -113,25 +124,66 @@ model.Board.controlMethods.setAttributeValue = function(event) {
 
 model.Board.controlMethods.saveEntity = function(event) {
 
-debugger;
+
     var board = {
             name: event.entityStorage[event.dataClass.attributes.name.name],
-            desc: event.entityStorage[event.dataClass.attributes.name.name]
+            desc: event.entityStorage[event.dataClass.attributes.desc.name]
         }
         // if ID = null we create a new card 
     if (event.entityStorage[event.dataClass.attributes.ID.name] == null) {
 
-        wakTrello.createNewBoard(appkey, token, board)
+        try {
+
+            wakTrello.createNewBoard(appkey, token, board)
+        }
+        catch (e) {
+            throw e;
+        }
+
 
     }
     // if ID not null we update an existing card
     else {
-    	
-wakTrello.renameBoard(appkey,token,event.entityStorage[event.dataClass.attributes.ID.name],event.entityStorage[event.dataClass.attributes.name.name]);
 
-        
+        try {
+
+            wakTrello.renameBoard(appkey, token, event.entityStorage[event.dataClass.attributes.ID.name], event.entityStorage[event.dataClass.attributes.name.name]);
+
+        }
+        catch (e) {
+            throw e;
+        }
+
+
     }
 };
 
+//model.Board.controlMethods.dropEntity=function(){
+//	
+//	console.log("dropEntity")
+//	
+//}
+model.Board.controlMethods.getEntityByKey = function(event) {
+    var element;
+    var idBoard = event.key[0];
+    try {
+
+        element = wakTrello.getBoardByID(appkey, token, idBoard);
+    }
+    catch (e) {
+        throw e;
+    }
+    if (element && element.id) {
+        event.entityStorage.ID = element.id;
+        event.entityStorage.name = element.name;
+        event.entityStorage.desc = element.desc;
+
+        return true;
+    }
+
+    return false;
 
 
+
+
+}
