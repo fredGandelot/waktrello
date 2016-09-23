@@ -1,5 +1,5 @@
  
-//ds.Board.all();
+//ds.Board.all(); 
 
 
 //ds.Board.orderBy('name asc');
@@ -16,7 +16,7 @@
 
 
 //var e= new ds.Board();
-//e.name="board from wakanda";
+//e.name="Hamdoune";
 //e.desc="desc from wakanda";
 //e.save();
 
