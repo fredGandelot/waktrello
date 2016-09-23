@@ -35,6 +35,6 @@ var username = 'elbouhassaniomar1'
 //wakTrello.getCardsOfAlist(appkey,token,'57e152b059143cf6b338f83f');
 
 
-ds.Card.remove();
+ 
 
 
