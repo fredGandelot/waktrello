@@ -28,3 +28,5 @@
 //var e=ds.Board('57e16b628d8e4655730452e0');
 //e.name="borad from wakanda named";
 //e.save();
+
+ds.Card.all();
