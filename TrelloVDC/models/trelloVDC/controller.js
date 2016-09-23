@@ -2,8 +2,8 @@ var appkey = "f527fe40338800eec3c64e8548c29924";
 var token = "347f9c1d1a527bec54bbee6d3e40810e52d3e93c1c1e687bb9c69e501e0ff26c";
 var username = 'elbouhassaniomar1'
 var wakTrello = require('wakanda-trello')
-// Read Bundle ,we should implement  all the methods (4 methods) of read bundle ( there is a dependency between the four methods )
-//allEntities
+    // Read Bundle ,we should implement  all the methods (4 methods) of read bundle ( there is a dependency between the four methods )
+    //allEntities
 model.Board.controlMethods.allEntities = function(event) {
         var elements = [];
         try {
@@ -21,7 +21,7 @@ model.Board.controlMethods.allEntities = function(event) {
         event.collectionStorage.elements = elements;
     }
     //getCollectionLength
-    
+
 model.Board.controlMethods.getCollectionLength = function(event) {
     return event.collectionStorage.elements.length;
 };
@@ -38,7 +38,7 @@ model.Board.controlMethods.getEntityByPos = function(event) {
 };
 // getAttributeValue
 model.Board.controlMethods.getAttributeValue = function(event) {
-   return event.entityStorage[event.attributeName];
+    return event.entityStorage[event.attributeName];
 };
 // end Read Bundle
 //orderBy
@@ -55,16 +55,16 @@ model.Board.controlMethods.orderBy = function(event) {
                 return -1;
             else if (s1[orderBy1.attname] == s2[orderBy1.attname]) {
                 // if we have an ambiguity  we sort by the second attribute (in general ID)
-                if(orderBy2!=undefined){
-                if (orderBy2.ascending) {
+                if (orderBy2 != undefined) {
+                    if (orderBy2.ascending) {
 
-                    if (s1[orderBy2.attname] < s2[orderBy2.attname]) {
-                        return -1;
+                        if (s1[orderBy2.attname] < s2[orderBy2.attname]) {
+                            return -1;
+                        }
+                        else
+                            return 1;
                     }
-                    else
-                        return 1;
                 }
-                }  
             }
             else
                 return 1;
@@ -73,16 +73,16 @@ model.Board.controlMethods.orderBy = function(event) {
             if (s2[orderBy1.attname] < s1[orderBy1.attname])
                 return -1;
             else if (s2[orderBy1.attname] == s1[orderBy1.attname]) {
-            	if(orderBy2!=undefined){
-                if (orderBy2.ascending) {
+                if (orderBy2 != undefined) {
+                    if (orderBy2.ascending) {
 
-                    if (s1[orderBy2.attname] < s2[orderBy2.attname]) {
-                        return -1;
+                        if (s1[orderBy2.attname] < s2[orderBy2.attname]) {
+                            return -1;
+                        }
+                        else
+                            return 1;
                     }
-                    else
-                        return 1;
                 }
-            }
             }
             else
                 return 1;
@@ -126,25 +126,18 @@ model.Board.controlMethods.saveEntity = function(event) {
         }
     }
 };
-
-
 // if this method is absent , the server should throw an exception --> i think its a bug
 //dropEntity
 
-model.Board.controlMethods.dropEntity=function(event){
-	console.log("dropEntity");
-	 
+model.Board.controlMethods.dropEntity = function(event) {
+        console.log("dropEntity");
+
+    }
+    //dropEntities
+model.Board.controlMethods.dropEntities = function(event) {
+    console.log("dropEntities");
+
 }
-
-
-//dropEntities
-model.Board.controlMethods.dropEntities=function(event){
-	console.log("dropEntities");
-	 
-}
-
-
-
 model.Board.controlMethods.getEntityByKey = function(event) {
     var element;
     var idBoard = event.key[0];
@@ -163,14 +156,59 @@ model.Board.controlMethods.getEntityByKey = function(event) {
     }
     return false;
 }
-
-
 /***************************************************************/
 /************************** Card ******************************/
 /***************************************************************/
+//read bundle
+model.Card.controlMethods.allEntities = function(event) {
+    var allCards = [];
+    try {
+        wakTrello.getBoards(appkey, token, username).forEach(function(item) {
 
- model.Card.controlMethods.getEntityByKey = function(event) {
-  
+            wakTrello.getListsOfABoard(appkey, token, item.id).forEach(function(item) {
+
+                wakTrello.getCardsOfAlist(appkey, token, item.id).forEach(function(item) {
+
+                    var card = {};
+                    card.ID = item.id;
+                    card.name = item.name;
+                    card.isClosed = item.closed;
+                    allCards.push(card);
+                })
+
+            })
+
+        });
+    }
+    catch (e) {
+        throw e;
+    }
+    event.collectionStorage.elements = allCards;
+};
+//getCollectionLength
+
+model.Card.controlMethods.getCollectionLength = function(event) {
+    return event.collectionStorage.elements.length;
+};
+
+// getEntityByPos
+model.Card.controlMethods.getEntityByPos = function(event) {
+    var pos = event.position;
+    var elements = event.collectionStorage.elements;
+    var element = elements[pos];
+
+    for (var i in element) {
+        event.entityStorage[i] = element[i];
+    }
+};
+// getAttributeValue
+
+model.Card.controlMethods.getAttributeValue = function(event) {
+    return event.entityStorage[event.attributeName];
+};
+//End read bundle 
+model.Card.controlMethods.getEntityByKey = function(event) {
+
     var element;
     var idCard = event.key[0];
     try {
@@ -189,7 +227,6 @@ model.Board.controlMethods.getEntityByKey = function(event) {
     return false;
 }
 
-
 model.Card.controlMethods.newEntity = function() {
     // nothing do do here,  already built by Wakanda
 };
@@ -203,20 +240,32 @@ model.Card.controlMethods.getEntityByPos = function(event) {
     }
 };
 model.Card.controlMethods.getAttributeValue = function(event) {
-   return event.entityStorage[event.attributeName];
+    return event.entityStorage[event.attributeName];
 };
+model.Card.controlMethods.dropEntity = function(event) {
 
+    console.log("drop entity")
+    if (event.entityStorage.ID != null) {
+        try {
+            wakTrello.deleteCardByID(appkey, token, event.entityStorage.ID);
+        }
+        catch (e) {
+            throw e;
+        }
+    }
+}
+// dropEntities need allEntities to be implemented 
+model.Card.controlMethods.dropEntities = function(event) {
 
+    var allCards = event.collectionStorage.elements;
+    allCards.forEach(function(item) {
+        try {
+            wakTrello.deleteCardByID(appkey, token, item.ID)
+        }
+        catch (e) {
+            throw e;
+        }
+    });
+    console.log("dropEntities");
 
-model.Card.controlMethods.dropEntity=function(event){
-	 
-	 console.log("drop entity")
-	 if (event.entityStorage.ID!=null)
-	{
-		try{
-			wakTrello.deleteCardByID(appkey,token,event.entityStorage.ID);
-		}catch(e){
-			throw e;
-		}
-	}
 }
