@@ -1,10 +1,12 @@
 var appkey = process.env.appkey;
 var token = process.env.token;
-var username = process.env.username;
+var username = process.env.userNameTrello;
 var wakTrello = require('wakanda-trello')
+
     // Read Bundle ,we should implement  all the methods (4 methods) of read bundle ( there is a dependency between the four methods )
     //allEntities
 model.Board.controlMethods.allEntities = function(event) {
+
         var elements = [];
         try {
             wakTrello.getBoards(appkey, token, username).forEach(function(item) {
@@ -22,7 +24,9 @@ model.Board.controlMethods.allEntities = function(event) {
     }
     //getCollectionLength
 
+
 model.Board.controlMethods.getCollectionLength = function(event) {
+	
     return event.collectionStorage.elements.length;
 };
 
@@ -37,10 +41,18 @@ model.Board.controlMethods.getEntityByPos = function(event) {
     }
 };
 // getAttributeValue
+
 model.Board.controlMethods.getAttributeValue = function(event) {
-	
-    return event.entityStorage[event.attributeName];
+
+
+    if (event.attributeName === 'children') {
+
+        return ds.List.query(':' + event.entityStorage.ID)
+    }
+    else
+        return event.entityStorage[event.attributeName];
 };
+
 
 model.Board.controlMethods.getEntityByKey = function(event) {
     var element;
@@ -113,6 +125,7 @@ model.Board.controlMethods.orderBy = function(event) {
     // Set sort entityCollection
     event.sortedCollectionStorage.elements = elements;
 };
+
 //Save Bundle  , we should implement  all the methods (4 methods) of Save bundle ( there is a dependency between the four methods )
 model.Board.controlMethods.newEntity = function() {
     // nothing do do here,  already built by Wakanda
@@ -151,17 +164,6 @@ model.Board.controlMethods.saveEntity = function(event) {
 // if this method is absent , the server should throw an exception --> i think its a bug
 //dropEntity
 
-model.Board.controlMethods.dropEntity = function(event) {
-        console.log("dropEntity");
-
-    }
-    //dropEntities
-    
-    
-model.Board.controlMethods.dropEntities = function(event) {
-    console.log("dropEntities");
-
-}
 model.Board.controlMethods.getEntityByKey = function(event) {
     var element;
     var idBoard = event.key[0];
@@ -180,39 +182,41 @@ model.Board.controlMethods.getEntityByKey = function(event) {
     }
     return false;
 }
-model.Board.controlMethods.countEntities=function (event){
-	// I think in event object we should have all entities
-	var coll=wakTrello.getBoards(appkey, token, username);
-	return coll.length
-	
-	
+
+model.Board.controlMethods.countEntities = function(event) {
+    // I think in event object we should have all entities
+    var coll = wakTrello.getBoards(appkey, token, username);
+    return coll.length
+
+}
+model.Board.controlMethods.getRelatedEntities = function(event) {
+
+    return event.entityStorage.children;
 }
 
-model.Board.controlMethods.newCollection=function(event){
-	event.collectionStorage.boards = [];
-	
-}
 
 
 /***************************************************************/
 /************************** List ******************************/
 /***************************************************************/
 
+// Read Bundle ,we should implement  all the methods (4 methods) of read bundle ( there is a dependency between the four methods )
+    //allEntities
 
 model.List.controlMethods.allEntities = function(event) {
         var allLists = [];
         try {
             wakTrello.getBoards(appkey, token, username).forEach(function(item) {
-            	
-            	 wakTrello.getListsOfABoard(appkey, token, item.id).forEach(function(item) {
-                    var list={};
-                    list.ID=item.id;
-                    list.name=item.name;
-                    list.isClosed=item.closed;
-                    list.idBoard=item.idBoard;
-                    allLists.push(list);  
-            })
-                
+
+                wakTrello.getListsOfABoard(appkey, token, item.id).forEach(function(item) {
+                    var list = {};
+                    list.ID = item.id;
+                    list.name = item.name;
+                    list.isClosed = item.closed;
+                    list.idBoard = item.idBoard;
+                    allLists.push(list);
+                })
+
             });
         }
         catch (e) {
@@ -220,6 +224,7 @@ model.List.controlMethods.allEntities = function(event) {
         }
         event.collectionStorage.elements = allLists;
     }
+    
     //getCollectionLength
 
 model.List.controlMethods.getCollectionLength = function(event) {
@@ -238,18 +243,17 @@ model.List.controlMethods.getEntityByPos = function(event) {
 };
 // getAttributeValue
 model.List.controlMethods.getAttributeValue = function(event) {
-	
 
-if (event.attributeName === 'parent')
-	{
-		
-			return ds.Board(event.entityStorage.idBoard);
-	}
-	else
-		return event.entityStorage[event.attributeName];
-		
+
+    if (event.attributeName === 'parent') {
+
+        return ds.Board(event.entityStorage.idBoard);
+    }
+    else
+        return event.entityStorage[event.attributeName];
+
 };
-
+//getEntityByKey
 model.List.controlMethods.getEntityByKey = function(event) {
     var element;
     var idBoard = event.key[0];
@@ -269,32 +273,78 @@ model.List.controlMethods.getEntityByKey = function(event) {
     }
     return false;
 }
+// getRelatedKey
+model.List.controlMethods.getRelatedKey = function(event) {
 
-model.List.controlMethods.getRelatedKey=function(event){
-	
-	return event.entityStorage.idBoard //  I store the idBoard on list entity  
-	                                   // if not we could do : 
-	          //return  event.entityStorage.parent (will call ds.Board .....)                        
-	 
-	
+    return event.entityStorage.idBoard //  I store the idBoard on list entity  
+        // if not we could do : 
+        //return  event.entityStorage.parent (will call ds.Board .....)                        
+
+
+}
+// getRelatedEntity
+model.List.controlMethods.getRelatedEntity = function(event) {
+
+    return event.entityStorage.parent;
+
 }
 
-model.List.controlMethods.getRelatedEntity=function(event){
-	
-	return event.entityStorage.parent;
-	
+//getStamp
+model.List.controlMethods.getStamp = function(event) {
+    // je ne vois pas l'utilité de cette methode 
+    return 10;
+
 }
 
-model.List.controlMethods.getStamp=function(event){
-	// je ne vois pas l'utilité de cette methode 
-	return 10;
-	
+//newCollection
+
+model.List.controlMethods.newCollection = function(event) {
+
+    event.collectionStorage.elements = [];
+
 }
 
+//addEntityToCollection
+model.List.controlMethods.addEntityToCollection = function(event) {
+
+    var path = event.entityStorage.path;
+    if (path != null) {
+        var lists = event.collectionStorage.elements;
+        arr.push(path);
+        event.collectionStorage.elements = lists;
+    }
+}
+
+//queryByString
+model.List.controlMethods.queryByString = function(event) {
 
 
 
+    if (event.queryString[0] === ":") {
+        var elements = [];
+        var idBoard = event.queryString.split(":")[1];
+        wakTrello.getListsOfABoard(appkey, token, idBoard).forEach(function(item) {
+            var list = {};
+            list.ID = item.id;
+            list.name = item.name;
+            list.isClosed = item.closed;
+            list.idBoard = item.idBoard;
+            elements.push(list);
+        })
+        event.collectionStorage.elements = elements;
+        return true;
+    }
+    else
+        return false; // falls back on queryByCriteria()
+}
 
+// queryByCriteria to be implemented tomorrow
+model.List.controlMethods.queryByCriteria = function(event) {
+
+    var creterias = event.query;
+
+    debugger;
+}
 
 
 /***************************************************************/
@@ -385,17 +435,17 @@ model.Card.controlMethods.getAttributeValue = function(event) {
 };
 model.Card.controlMethods.dropEntity = function(event) {
 
-    console.log("drop entity")
-    if (event.entityStorage.ID != null) {
-        try {
-            wakTrello.deleteCardByID(appkey, token, event.entityStorage.ID);
-        }
-        catch (e) {
-            throw e;
+        console.log("drop entity")
+        if (event.entityStorage.ID != null) {
+            try {
+                wakTrello.deleteCardByID(appkey, token, event.entityStorage.ID);
+            }
+            catch (e) {
+                throw e;
+            }
         }
     }
-}
-// dropEntities need allEntities to be implemented 
+    // dropEntities need allEntities to be implemented 
 model.Card.controlMethods.dropEntities = function(event) {
 
     var allCards = event.collectionStorage.elements;
