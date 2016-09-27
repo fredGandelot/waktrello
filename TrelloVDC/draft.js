@@ -17,7 +17,6 @@ var username = 'elbouhassaniomar1'
 
 //wakTrello.getListsOfABoard(appkey,token,"57e152b059143cf6b338f83e")
 
-
 //wakTrello.deleteCardByID(appkey,token,'57e407b2d57d6606207a841e');
 //wakTrello.getCardsOfAlist(appkey,token,'57e152b059143cf6b338f83f')
 
@@ -28,13 +27,18 @@ var username = 'elbouhassaniomar1'
 //e
 
 //ds.Card.remove();
-
-
 // wakTrello.getBoards(appkey,token,username)
 //wakTrello.getListsOfABoard(appkey,token,'57e16e581fac3d12b47cbca6')
 //wakTrello.getCardsOfAlist(appkey,token,'57e152b059143cf6b338f83f');
 
 
- 
+// 57e16e581fac3d12b47cbca7 list key
+
+//ds.Board.count()
+//var l= ds.List('57e16e581fac3d12b47cbca7');
+//l.getStamp();
 
 
+//57e16e581fac3d12b47cbca6 id board
+
+ds.Board.query("ID>1")

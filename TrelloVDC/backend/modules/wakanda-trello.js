@@ -52,6 +52,15 @@ exports.getCardByID=function(appkey,token,idCard){
 	return JSON.parse(xhr.responseText);
 	
 }
+exports.getListByID=function(appkey,token,idList){
+ 
+	var request='https://api.trello.com/1/lists/'+idList+'?&key='+appkey+'&token='+token ;
+	var xhr=new XMLHttpRequest();
+    xhr.open('GET',request,true);
+    xhr.send();
+	return JSON.parse(xhr.responseText);
+	
+}
 
 // POST
 exports.createNewCard=function(appkey,token,idList,card){	
