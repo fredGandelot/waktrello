@@ -1,6 +1,6 @@
 
 
-/* DONT TRY IT WITH OUR OFFICIAL TRELLO   ! */
+/* DONT TRY IT WITH OUR OFFICIAL TRELLO   :p ! */
 /*************************************/
 /************** READ ****************/
 /************************************/

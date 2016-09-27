@@ -38,8 +38,30 @@ model.Board.controlMethods.getEntityByPos = function(event) {
 };
 // getAttributeValue
 model.Board.controlMethods.getAttributeValue = function(event) {
+	
     return event.entityStorage[event.attributeName];
 };
+
+model.Board.controlMethods.getEntityByKey = function(event) {
+    var element;
+    var idBoard = event.key[0];
+    try {
+
+        element = wakTrello.getBoardByID(appkey, token, idBoard);
+    }
+    catch (e) {
+        throw e;
+    }
+    if (element && element.id) {
+        event.entityStorage.ID = element.id;
+        event.entityStorage.name = element.name;
+        event.entityStorage.desc = element.desc;
+        return true;
+    }
+    return false;
+}
+
+
 // end Read Bundle
 //orderBy
 
@@ -134,6 +156,8 @@ model.Board.controlMethods.dropEntity = function(event) {
 
     }
     //dropEntities
+    
+    
 model.Board.controlMethods.dropEntities = function(event) {
     console.log("dropEntities");
 
@@ -156,6 +180,123 @@ model.Board.controlMethods.getEntityByKey = function(event) {
     }
     return false;
 }
+model.Board.controlMethods.countEntities=function (event){
+	// I think in event object we should have all entities
+	var coll=wakTrello.getBoards(appkey, token, username);
+	return coll.length
+	
+	
+}
+
+model.Board.controlMethods.newCollection=function(event){
+	event.collectionStorage.boards = [];
+	
+}
+
+
+/***************************************************************/
+/************************** List ******************************/
+/***************************************************************/
+
+
+model.List.controlMethods.allEntities = function(event) {
+        var allLists = [];
+        try {
+            wakTrello.getBoards(appkey, token, username).forEach(function(item) {
+            	
+            	 wakTrello.getListsOfABoard(appkey, token, item.id).forEach(function(item) {
+                    var list={};
+                    list.ID=item.id;
+                    list.name=item.name;
+                    list.isClosed=item.closed;
+                    list.idBoard=item.idBoard;
+                    allLists.push(list);  
+            })
+                
+            });
+        }
+        catch (e) {
+            throw e;
+        }
+        event.collectionStorage.elements = allLists;
+    }
+    //getCollectionLength
+
+model.List.controlMethods.getCollectionLength = function(event) {
+    return event.collectionStorage.elements.length;
+};
+
+// getEntityByPos
+model.List.controlMethods.getEntityByPos = function(event) {
+    var pos = event.position;
+    var elements = event.collectionStorage.elements;
+    var element = elements[pos];
+
+    for (var i in element) {
+        event.entityStorage[i] = element[i];
+    }
+};
+// getAttributeValue
+model.List.controlMethods.getAttributeValue = function(event) {
+	
+
+if (event.attributeName === 'parent')
+	{
+		
+			return ds.Board(event.entityStorage.idBoard);
+	}
+	else
+		return event.entityStorage[event.attributeName];
+		
+};
+
+model.List.controlMethods.getEntityByKey = function(event) {
+    var element;
+    var idBoard = event.key[0];
+    try {
+
+        element = wakTrello.getListByID(appkey, token, idBoard);
+    }
+    catch (e) {
+        throw e;
+    }
+    if (element && element.id) {
+        event.entityStorage.ID = element.id;
+        event.entityStorage.name = element.name;
+        event.entityStorage.isClosed = element.closed;
+        event.entityStorage.idBoard = element.idBoard;
+        return true;
+    }
+    return false;
+}
+
+model.List.controlMethods.getRelatedKey=function(event){
+	
+	return event.entityStorage.idBoard //  I store the idBoard on list entity  
+	                                   // if not we could do : 
+	          //return  event.entityStorage.parent (will call ds.Board .....)                        
+	 
+	
+}
+
+model.List.controlMethods.getRelatedEntity=function(event){
+	
+	return event.entityStorage.parent;
+	
+}
+
+model.List.controlMethods.getStamp=function(event){
+	// je ne vois pas l'utilité de cette methode 
+	return 10;
+	
+}
+
+
+
+
+
+
+
 /***************************************************************/
 /************************** Card ******************************/
 /***************************************************************/
