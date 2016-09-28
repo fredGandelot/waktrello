@@ -340,10 +340,71 @@ model.List.controlMethods.queryByString = function(event) {
 
 // queryByCriteria to be implemented tomorrow
 model.List.controlMethods.queryByCriteria = function(event) {
-
-    var creterias = event.query;
-
-    debugger;
+ debugger;
+    var listsToBeReturned=[];
+    var criterias = event.query;
+    	if (criterias.length == 1)
+	{
+		var criteria = criterias[0];
+		var val ;
+		var attributeName=criteria.attributeName;
+		var beginWith = false;
+		var endWith = false;
+		if (criteria.value[0] == '*')
+		{
+			beginWith = true;
+			val = criteria.value.substring(1, criteria.value.length);
+		}
+		else if (criteria.value[criteria.value.length-1] == '*')
+		{
+			endWith = true;
+			val = criteria.value.substring(0, criteria.value.length-1);
+		}
+      if(beginWith){
+      var lists=ds.List.all();
+      
+      	
+      	lists.forEach(function(item){
+      		var ok=false;
+      			var subname = item[attributeName].substring(0);
+      		if(subname.toLowerCase()==val.toLowerCase()) 
+      		  ok=true;
+      		
+         if(ok){
+         	
+         	var list = {};
+            list.ID = item.id;
+            list.name = item.name;
+            list.isClosed = item.closed;
+            list.idBoard = item.idBoard;
+            listsToBeReturned.push(list);
+         }	
+      	})
+      }else{
+      		
+      	var lists=ds.List.all();
+      	
+      	lists.forEach(function(item){
+      		var ok=false;
+      		var subname = item[attributeName].substring(item[attributeName].length-val.length);
+      		if(subname.toLowerCase()==val.toLowerCase()) 
+      		  ok=true;
+      		
+         if(ok){
+         	console.log(item.name)
+         	var list = {};
+            list.ID = item.id;
+            list.name = item.name;
+            list.isClosed = item.closed;
+            list.idBoard = item.idBoard;
+            listsToBeReturned.push(list);
+         }
+      		
+      	})
+      }
+ 
+     event.collectionStorage.elements = listsToBeReturned;
+   }
 }
 
 
