@@ -1,7 +1,7 @@
-var appkey = process.env.appkey;
+ var appkey = process.env.appkey;
 var token = process.env.token;
 var username = process.env.userNameTrello;
-var wakTrello = require('wakanda-trello')
+var wakTrello = require('wakanda-trello')  
 
     // Read Bundle ,we should implement  all the methods (4 methods) of read bundle ( there is a dependency between the four methods )
     //allEntities
@@ -23,8 +23,6 @@ model.Board.controlMethods.allEntities = function(event) {
         event.collectionStorage.elements = elements;
     }
     //getCollectionLength
-
-
 model.Board.controlMethods.getCollectionLength = function(event) {
 	
     return event.collectionStorage.elements.length;
@@ -43,15 +41,16 @@ model.Board.controlMethods.getEntityByPos = function(event) {
 // getAttributeValue
 
 model.Board.controlMethods.getAttributeValue = function(event) {
-
-
-    if (event.attributeName === 'children') {
-
-        return ds.List.query(':' + event.entityStorage.ID)
-    }
-    else
-        return event.entityStorage[event.attributeName];
-};
+        if (event.attributeName === 'children') {
+            if(event.onlyLightValue){
+                return {deferred: true};
+            } else {
+                return ds.List.query(':' + event.entityStorage.ID)
+            };            
+        } else {
+            return event.entityStorage[event.attributeName];
+        }            
+    };
 
 
 model.Board.controlMethods.getEntityByKey = function(event) {
@@ -338,7 +337,7 @@ model.List.controlMethods.queryByString = function(event) {
         return false; // falls back on queryByCriteria()
 }
 
-// queryByCriteria to be implemented tomorrow
+// queryByCriteria 
 model.List.controlMethods.queryByCriteria = function(event) {
  debugger;
     var listsToBeReturned=[];
