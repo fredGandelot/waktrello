@@ -1,8 +1,8 @@
  var appkey = process.env.appkey;
-var token = process.env.token;
-var username = process.env.userNameTrello;
-var wakTrello = require('wakanda-trello')  
-
+ var token = process.env.token;
+ var username = process.env.userNameTrello;
+ var wakTrello = require('wakanda-trello');  
+ 
     // Read Bundle ,we should implement  all the methods (4 methods) of read bundle ( there is a dependency between the four methods )
     //allEntities
 model.Board.controlMethods.allEntities = function(event) {
@@ -45,6 +45,7 @@ model.Board.controlMethods.getAttributeValue = function(event) {
             if(event.onlyLightValue){
                 return {deferred: true};
             } else {
+            	if(event.entityStorage.ID!=null)
                 return ds.List.query(':' + event.entityStorage.ID)
             };            
         } else {
@@ -127,7 +128,7 @@ model.Board.controlMethods.orderBy = function(event) {
 
 //Save Bundle  , we should implement  all the methods (4 methods) of Save bundle ( there is a dependency between the four methods )
 model.Board.controlMethods.newEntity = function() {
-    // nothing do do here,  already built by Wakanda
+   // nothing do do here,  already built by Wakanda
 };
 
 model.Board.controlMethods.setAttributeValue = function(event) {
@@ -192,12 +193,19 @@ model.Board.controlMethods.getRelatedEntities = function(event) {
 
     return event.entityStorage.children;
 }
+model.Board.controlMethods.newCollection = function(event) {
 
+    event.collectionStorage.elements = [];
+
+}
 
 
 /***************************************************************/
 /************************** List ******************************/
 /***************************************************************/
+model.List.controlMethods.newEntity = function() {
+    // nothing do do here,  already built by Wakanda
+};
 
 // Read Bundle ,we should implement  all the methods (4 methods) of read bundle ( there is a dependency between the four methods )
     //allEntities

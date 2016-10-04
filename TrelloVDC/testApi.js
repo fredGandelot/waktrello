@@ -24,8 +24,8 @@
 
 
 
-// var e = new ds.Board();
-// e
+ var e = new ds.Board();
+ 
 
 // var e = new ds.Board();
 // e.save();
