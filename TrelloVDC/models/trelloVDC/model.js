@@ -27,5 +27,8 @@ model.Member = new DataClass("Members", "public");
 model.Member.ID = new Attribute("storage", "string", "key", {readOnly: true});
 model.Member.fullname = new Attribute("storage","string");
 model.Member.username = new Attribute("storage","string");
+model.Member.properties.scope="publicOnServer";
 
+
+include("./methods/Board/Board-methods.js");
 include("./controller.js")
