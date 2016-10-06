@@ -42,3 +42,8 @@ node_modules/
 *.log
 # Draft
 draft.js
+
+# folderToIgnor
+TrelloVDC/models/main/
+TrelloVDC/models/database/
+TrelloVDC/database/

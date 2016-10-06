@@ -1,13 +1,16 @@
- var appkey = process.env.appkey;
- var token = process.env.token;
- var username = process.env.userNameTrello;
- var wakTrello = require('wakanda-trello');  
+
+
+ //var appkey = process.env.appkey;
+ //var token = process.env.token;
+ //var username = process.env.userNameTrello; 
+ //var wakTrello = require('wakanda-trello');
+ 
+
  
     // Read Bundle ,we should implement  all the methods (4 methods) of read bundle ( there is a dependency between the four methods )
     //allEntities
 model.Board.controlMethods.allEntities = function(event) {
-
-        var elements = [];
+         var elements = [];
         try {
             wakTrello.getBoards(appkey, token, username).forEach(function(item) {
                 var elem = {};
@@ -200,6 +203,16 @@ model.Board.controlMethods.newCollection = function(event) {
 }
 
 
+model.Board.controlMethods.addEntityToCollection = function(event) {
+
+    var path = event.entityStorage.path;
+    if (path != null) {
+        var boards = event.collectionStorage.elements;
+        arr.push(path);
+        event.collectionStorage.elements = boards;
+    }
+}
+
 /***************************************************************/
 /************************** List ******************************/
 /***************************************************************/
@@ -347,7 +360,7 @@ model.List.controlMethods.queryByString = function(event) {
 
 // queryByCriteria 
 model.List.controlMethods.queryByCriteria = function(event) {
- debugger;
+ 
     var listsToBeReturned=[];
     var criterias = event.query;
     	if (criterias.length == 1)
@@ -366,6 +379,10 @@ model.List.controlMethods.queryByCriteria = function(event) {
 		{
 			endWith = true;
 			val = criteria.value.substring(0, criteria.value.length-1);
+		}
+		else {
+			val = criteria.value;
+			
 		}
       if(beginWith){
       var lists=ds.List.all();
@@ -398,7 +415,7 @@ model.List.controlMethods.queryByCriteria = function(event) {
       		  ok=true;
       		
          if(ok){
-         	console.log(item.name)
+         	 
          	var list = {};
             list.ID = item.id;
             list.name = item.name;
