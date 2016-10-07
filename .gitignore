@@ -44,6 +44,4 @@ node_modules/
 draft.js
 
 # folderToIgnor
-TrelloVDC/models/main/
-TrelloVDC/models/database/
-TrelloVDC/database/
+
