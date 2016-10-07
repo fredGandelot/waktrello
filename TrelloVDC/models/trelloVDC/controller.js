@@ -3,8 +3,7 @@
  var appkey = process.env.appkey;
  var token = process.env.token;
  var username = process.env.userNameTrello; 
- var wakTrello = require('wakanda-trello');
- 
+ var wakTrello = require('wakanda-trello'); 
 
  
     // Read Bundle ,we should implement  all the methods (4 methods) of read bundle ( there is a dependency between the four methods )
@@ -339,27 +338,29 @@ model.List.controlMethods.queryByString = function(event) {
 
 // queryByCriteria 
 model.List.controlMethods.queryByCriteria = function(event) {
- 
+  debugger;
     var listsToBeReturned=[];
     var criterias = event.query;
     	if (criterias.length == 1)
 	{
-		var criteria = criterias[0];
-		var val ;
+		var criteria = criterias[0]; 
+		var val ;   
 		var attributeName=criteria.attributeName;
 		var beginWith = false;
 		var endWith = false;
+		var equal=false;
 		if (criteria.value[0] == '*')
 		{
-			beginWith = true;
+			endWith = true;
 			val = criteria.value.substring(1, criteria.value.length);
 		}
 		else if (criteria.value[criteria.value.length-1] == '*')
 		{
-			endWith = true;
+			beginWith = true;
 			val = criteria.value.substring(0, criteria.value.length-1);
 		}
 		else {
+			equal=true;
 			val = criteria.value;
 			
 		}
@@ -369,7 +370,7 @@ model.List.controlMethods.queryByCriteria = function(event) {
       	
       	lists.forEach(function(item){
       		var ok=false;
-      			var subname = item[attributeName].substring(0);
+      			var subname = item[attributeName].substring(0,val.length);
       		if(subname.toLowerCase()==val.toLowerCase()) 
       		  ok=true;
       		
@@ -383,12 +384,13 @@ model.List.controlMethods.queryByCriteria = function(event) {
             listsToBeReturned.push(list);
          }	
       	})
-      }else{
+      }else if(endWith){
       		
       	var lists=ds.List.all();
       	
       	lists.forEach(function(item){
       		var ok=false;
+      		
       		var subname = item[attributeName].substring(item[attributeName].length-val.length);
       		if(subname.toLowerCase()==val.toLowerCase()) 
       		  ok=true;
@@ -404,6 +406,30 @@ model.List.controlMethods.queryByCriteria = function(event) {
          }
       		
       	})
+      }
+      else {
+      	
+      	var lists=ds.List.all();
+      	
+      	lists.forEach(function(item){
+      		var ok=false;
+      		 
+      		var subname = item[attributeName].substring(item[attributeName].length-val.length);
+      		if(subname.toLowerCase()==val.toLowerCase()) 
+      		  ok=true;
+      		
+         if(ok){
+         	 
+         	var list = {};
+            list.ID = item.id;
+            list.name = item.name;
+            list.isClosed = item.closed;
+            list.idBoard = item.idBoard;
+            listsToBeReturned.push(list);
+         }
+      		
+      	})
+      	
       }
  
      event.collectionStorage.elements = listsToBeReturned;
