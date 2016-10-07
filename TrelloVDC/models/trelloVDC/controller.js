@@ -1,9 +1,9 @@
 
 
- //var appkey = process.env.appkey;
- //var token = process.env.token;
- //var username = process.env.userNameTrello; 
- //var wakTrello = require('wakanda-trello');
+ var appkey = process.env.appkey;
+ var token = process.env.token;
+ var username = process.env.userNameTrello; 
+ var wakTrello = require('wakanda-trello');
  
 
  
@@ -55,27 +55,6 @@ model.Board.controlMethods.getAttributeValue = function(event) {
             return event.entityStorage[event.attributeName];
         }            
     };
-
-
-model.Board.controlMethods.getEntityByKey = function(event) {
-    var element;
-    var idBoard = event.key[0];
-    try {
-
-        element = wakTrello.getBoardByID(appkey, token, idBoard);
-    }
-    catch (e) {
-        throw e;
-    }
-    if (element && element.id) {
-        event.entityStorage.ID = element.id;
-        event.entityStorage.name = element.name;
-        event.entityStorage.desc = element.desc;
-        return true;
-    }
-    return false;
-}
-
 
 // end Read Bundle
 //orderBy
@@ -506,18 +485,7 @@ model.Card.controlMethods.getEntityByKey = function(event) {
 model.Card.controlMethods.newEntity = function() {
     // nothing do do here,  already built by Wakanda
 };
-model.Card.controlMethods.getEntityByPos = function(event) {
-    var pos = event.position;
-    var elements = event.collectionStorage.elements;
-    var element = elements[pos];
 
-    for (var i in element) {
-        event.entityStorage[i] = element[i];
-    }
-};
-model.Card.controlMethods.getAttributeValue = function(event) {
-    return event.entityStorage[event.attributeName];
-};
 model.Card.controlMethods.dropEntity = function(event) {
 
         console.log("drop entity")
