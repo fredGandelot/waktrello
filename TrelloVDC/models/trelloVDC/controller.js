@@ -1,5 +1,4 @@
 
-
  var appkey = process.env.appkey;
  var token = process.env.token;
  var username = process.env.userNameTrello; 
@@ -26,7 +25,6 @@ model.Board.controlMethods.allEntities = function(event) {
     }
     //getCollectionLength
 model.Board.controlMethods.getCollectionLength = function(event) {
-	
     return event.collectionStorage.elements.length;
 };
 
@@ -47,8 +45,8 @@ model.Board.controlMethods.getAttributeValue = function(event) {
             if(event.onlyLightValue){
                 return {deferred: true};
             } else {
-            	if(event.entityStorage.ID!=null)
-                return ds.List.query(':' + event.entityStorage.ID)
+            if(event.entityStorage.ID!=null)
+                return ds.List.query('+' + event.entityStorage.ID)
             };            
         } else {
             return event.entityStorage[event.attributeName];
@@ -304,23 +302,25 @@ model.List.controlMethods.newCollection = function(event) {
 
 //addEntityToCollection
 model.List.controlMethods.addEntityToCollection = function(event) {
-
-    var path = event.entityStorage.path;
-    if (path != null) {
-        var lists = event.collectionStorage.elements;
-        arr.push(path);
-        event.collectionStorage.elements = lists;
-    }
+var item = event.entity;
+var elements = event.collectionStorage.elements;
+    var list = {};
+    list.ID = item.ID;
+    list.name = item.name;
+    list.isClosed = item.closed;
+    list.idBoard = item.idBoard;
+    elements.push(list);
+    event.collectionStorage.elements = elements;
 }
 
 //queryByString
 model.List.controlMethods.queryByString = function(event) {
 
+ 
 
-
-    if (event.queryString[0] === ":") {
+    if (event.queryString[0] === "+") {
         var elements = [];
-        var idBoard = event.queryString.split(":")[1];
+        var idBoard = event.queryString.split("+")[1];
         wakTrello.getListsOfABoard(appkey, token, idBoard).forEach(function(item) {
             var list = {};
             list.ID = item.id;
@@ -338,102 +338,103 @@ model.List.controlMethods.queryByString = function(event) {
 
 // queryByCriteria 
 model.List.controlMethods.queryByCriteria = function(event) {
-  debugger;
+  
     var listsToBeReturned=[];
     var criterias = event.query;
-    	if (criterias.length == 1)
-	{
-		var criteria = criterias[0]; 
-		var val ;   
-		var attributeName=criteria.attributeName;
-		var beginWith = false;
-		var endWith = false;
-		var equal=false;
-		if (criteria.value[0] == '*')
-		{
-			endWith = true;
-			val = criteria.value.substring(1, criteria.value.length);
-		}
-		else if (criteria.value[criteria.value.length-1] == '*')
-		{
-			beginWith = true;
-			val = criteria.value.substring(0, criteria.value.length-1);
-		}
-		else {
-			equal=true;
-			val = criteria.value;
-			
-		}
+    if (criterias.length == 1)
+{
+var criteria = criterias[0]; 
+var val ;   
+var attributeName=criteria.attributeName;
+var beginWith = false;
+var endWith = false;
+var equal=false;
+if (criteria.value[0] == '*')
+{
+endWith = true;
+val = criteria.value.substring(1, criteria.value.length);
+}
+else if (criteria.value[criteria.value.length-1] == '*')
+{
+beginWith = true;
+val = criteria.value.substring(0, criteria.value.length-1);
+}
+else {
+equal=true;
+val = criteria.value;
+}
       if(beginWith){
       var lists=ds.List.all();
       
-      	
-      	lists.forEach(function(item){
-      		var ok=false;
-      			var subname = item[attributeName].substring(0,val.length);
-      		if(subname.toLowerCase()==val.toLowerCase()) 
-      		  ok=true;
-      		
+     
+      lists.forEach(function(item){
+      var ok=false;
+      var subname = item[attributeName].substring(0,val.length);
+      if(subname.toLowerCase()==val.toLowerCase()) 
+        ok=true;
+     
          if(ok){
-         	
-         	var list = {};
-            list.ID = item.id;
-            list.name = item.name;
-            list.isClosed = item.closed;
-            list.idBoard = item.idBoard;
-            listsToBeReturned.push(list);
-         }	
-      	})
-      }else if(endWith){
-      		
-      	var lists=ds.List.all();
-      	
-      	lists.forEach(function(item){
-      		var ok=false;
-      		
-      		var subname = item[attributeName].substring(item[attributeName].length-val.length);
-      		if(subname.toLowerCase()==val.toLowerCase()) 
-      		  ok=true;
-      		
-         if(ok){
-         	 
-         	var list = {};
-            list.ID = item.id;
+         
+         var list = {};
+            list.ID = item.ID;
             list.name = item.name;
             list.isClosed = item.closed;
             list.idBoard = item.idBoard;
             listsToBeReturned.push(list);
          }
-      		
-      	})
+      })
+      }else if(endWith){
+     
+      var lists=ds.List.all();
+     
+      lists.forEach(function(item){
+      var ok=false;
+     
+      var subname = item[attributeName].substring(item[attributeName].length-val.length);
+      if(subname.toLowerCase()==val.toLowerCase()) 
+        ok=true;
+     
+         if(ok){
+          
+         var list = {};
+            list.ID = item.ID;
+            list.name = item.name;
+            list.isClosed = item.closed;
+            list.idBoard = item.idBoard;
+            listsToBeReturned.push(list);
+         }
+     
+      })
       }
       else {
-      	
-      	var lists=ds.List.all();
-      	
-      	lists.forEach(function(item){
-      		var ok=false;
-      		 
-      		var subname = item[attributeName].substring(item[attributeName].length-val.length);
-      		if(subname.toLowerCase()==val.toLowerCase()) 
-      		  ok=true;
-      		
+     
+      var lists=ds.List.all();
+     
+      lists.forEach(function(item){
+      var ok=false;
+       
+      var subname = item[attributeName].substring(item[attributeName].length-val.length);
+      if(subname.toLowerCase()==val.toLowerCase()) 
+        ok=true;
+     
          if(ok){
-         	 
-         	var list = {};
-            list.ID = item.id;
+          
+         var list = {};
+            list.ID = item.ID;
             list.name = item.name;
             list.isClosed = item.closed;
             list.idBoard = item.idBoard;
             listsToBeReturned.push(list);
          }
-      		
-      	})
-      	
+     
+      })
+     
       }
  
      event.collectionStorage.elements = listsToBeReturned;
+     return true;
    }
+   return false;
 }
 
 
