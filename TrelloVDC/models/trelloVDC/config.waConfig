@@ -1,4 +1,1 @@
-{
-  "type":"virtual",
-  "group":"main"
-}
+{"type":"virtual","group":"main","connection":{}}

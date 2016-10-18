@@ -25,6 +25,7 @@ model.Board.controlMethods.allEntities = function(event) {
     }
     //getCollectionLength
 model.Board.controlMethods.getCollectionLength = function(event) {
+	
     return event.collectionStorage.elements.length;
 };
 
@@ -45,7 +46,7 @@ model.Board.controlMethods.getAttributeValue = function(event) {
             if(event.onlyLightValue){
                 return {deferred: true};
             } else {
-            if(event.entityStorage.ID!=null)
+            	if(event.entityStorage.ID!=null)
                 return ds.List.query('+' + event.entityStorage.ID)
             };            
         } else {
@@ -115,6 +116,7 @@ model.Board.controlMethods.setAttributeValue = function(event) {
     event.entityStorage[event.attributeName] = event.value;
 };
 model.Board.controlMethods.saveEntity = function(event) {
+	debugger;
     var board = {
             name: event.entityStorage[event.dataClass.attributes.name.name],
             desc: event.entityStorage[event.dataClass.attributes.desc.name]
@@ -302,8 +304,8 @@ model.List.controlMethods.newCollection = function(event) {
 
 //addEntityToCollection
 model.List.controlMethods.addEntityToCollection = function(event) {
-var item = event.entity;
-var elements = event.collectionStorage.elements;
+	var item = event.entity;
+	var elements = event.collectionStorage.elements;
     var list = {};
     list.ID = item.ID;
     list.name = item.name;
@@ -316,7 +318,7 @@ var elements = event.collectionStorage.elements;
 //queryByString
 model.List.controlMethods.queryByString = function(event) {
 
- 
+
 
     if (event.queryString[0] === "+") {
         var elements = [];
@@ -342,93 +344,94 @@ model.List.controlMethods.queryByCriteria = function(event) {
     var listsToBeReturned=[];
     var criterias = event.query;
     if (criterias.length == 1)
-{
-var criteria = criterias[0]; 
-var val ;   
-var attributeName=criteria.attributeName;
-var beginWith = false;
-var endWith = false;
-var equal=false;
-if (criteria.value[0] == '*')
-{
-endWith = true;
-val = criteria.value.substring(1, criteria.value.length);
-}
-else if (criteria.value[criteria.value.length-1] == '*')
-{
-beginWith = true;
-val = criteria.value.substring(0, criteria.value.length-1);
-}
-else {
-equal=true;
-val = criteria.value;
-}
+	{
+		var criteria = criterias[0]; 
+		var val ;   
+		var attributeName=criteria.attributeName;
+		var beginWith = false;
+		var endWith = false;
+		var equal=false;
+		if (criteria.value[0] == '*')
+		{
+			endWith = true;
+			val = criteria.value.substring(1, criteria.value.length);
+		}
+		else if (criteria.value[criteria.value.length-1] == '*')
+		{
+			beginWith = true;
+			val = criteria.value.substring(0, criteria.value.length-1);
+		}
+		else {
+			equal=true;
+			val = criteria.value;
+			
+		}
       if(beginWith){
       var lists=ds.List.all();
       
-     
-      lists.forEach(function(item){
-      var ok=false;
-      var subname = item[attributeName].substring(0,val.length);
-      if(subname.toLowerCase()==val.toLowerCase()) 
-        ok=true;
-     
+      	
+      	lists.forEach(function(item){
+      		var ok=false;
+      			var subname = item[attributeName].substring(0,val.length);
+      		if(subname.toLowerCase()==val.toLowerCase()) 
+      		  ok=true;
+      		
          if(ok){
-         
-         var list = {};
+         	
+         	var list = {};
             list.ID = item.ID;
             list.name = item.name;
             list.isClosed = item.closed;
             list.idBoard = item.idBoard;
             listsToBeReturned.push(list);
-         }
-      })
+         }	
+      	})
       }else if(endWith){
-     
-      var lists=ds.List.all();
-     
-      lists.forEach(function(item){
-      var ok=false;
-     
-      var subname = item[attributeName].substring(item[attributeName].length-val.length);
-      if(subname.toLowerCase()==val.toLowerCase()) 
-        ok=true;
-     
+      		
+      	var lists=ds.List.all();
+      	
+      	lists.forEach(function(item){
+      		var ok=false;
+      		
+      		var subname = item[attributeName].substring(item[attributeName].length-val.length);
+      		if(subname.toLowerCase()==val.toLowerCase()) 
+      		  ok=true;
+      		
          if(ok){
-          
-         var list = {};
+         	 
+         	var list = {};
             list.ID = item.ID;
             list.name = item.name;
             list.isClosed = item.closed;
             list.idBoard = item.idBoard;
             listsToBeReturned.push(list);
          }
-     
-      })
+      		
+      	})
       }
       else {
-     
-      var lists=ds.List.all();
-     
-      lists.forEach(function(item){
-      var ok=false;
-       
-      var subname = item[attributeName].substring(item[attributeName].length-val.length);
-      if(subname.toLowerCase()==val.toLowerCase()) 
-        ok=true;
-     
+      	
+      	var lists=ds.List.all();
+      	
+      	lists.forEach(function(item){
+      		var ok=false;
+      		 
+      		var subname = item[attributeName].substring(item[attributeName].length-val.length);
+      		if(subname.toLowerCase()==val.toLowerCase()) 
+      		  ok=true;
+      		
          if(ok){
-          
-         var list = {};
+         	 
+         	var list = {};
             list.ID = item.ID;
             list.name = item.name;
             list.isClosed = item.closed;
             list.idBoard = item.idBoard;
             listsToBeReturned.push(list);
          }
-     
-      })
-     
+      		
+      	})
+      	
       }
  
      event.collectionStorage.elements = listsToBeReturned;
