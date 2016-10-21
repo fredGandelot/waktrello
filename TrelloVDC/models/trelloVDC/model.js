@@ -6,6 +6,7 @@ model.Board.desc = new Attribute("storage","string");
 model.Board.children = new Attribute("relatedEntities", "Lists", "parent", {reversePath: true}); 
  
 
+
 model.List=new DataClass("Lists","public");
 model.List.ID=new Attribute("storage","string","key",{readOnly:true});
 model.List.name=new Attribute("storage","string");

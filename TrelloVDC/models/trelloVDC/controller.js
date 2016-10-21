@@ -1,16 +1,16 @@
 
- var appkey = process.env.appkey;
- var token = process.env.token;
- var username = process.env.userNameTrello; 
+
  var wakTrello = require('wakanda-trello'); 
 
- 
+  
     // Read Bundle ,we should implement  all the methods (4 methods) of read bundle ( there is a dependency between the four methods )
     //allEntities
 model.Board.controlMethods.allEntities = function(event) {
+	
+	 
          var elements = [];
         try {
-            wakTrello.getBoards(appkey, token, username).forEach(function(item) {
+            wakTrello.getBoards(process.env.appkey, process.env.token, process.env.userNameTrello).forEach(function(item) {
                 var elem = {};
                 elem.ID = item.id;
                 elem.name = item.name;
@@ -112,11 +112,13 @@ model.Board.controlMethods.newEntity = function() {
 };
 
 model.Board.controlMethods.setAttributeValue = function(event) {
+	 
+	   
 
     event.entityStorage[event.attributeName] = event.value;
 };
 model.Board.controlMethods.saveEntity = function(event) {
-	debugger;
+	  
     var board = {
             name: event.entityStorage[event.dataClass.attributes.name.name],
             desc: event.entityStorage[event.dataClass.attributes.desc.name]
@@ -126,7 +128,7 @@ model.Board.controlMethods.saveEntity = function(event) {
 
         try {
 
-            wakTrello.createNewBoard(appkey, token, board)
+            wakTrello.createNewBoard(process.env.appkey, process.env.token, board)
         }
         catch (e) {
             throw e;
@@ -135,7 +137,7 @@ model.Board.controlMethods.saveEntity = function(event) {
     // if ID not null we update an existing card
     else {
         try {
-            wakTrello.renameBoard(appkey, token, event.entityStorage[event.dataClass.attributes.ID.name], event.entityStorage[event.dataClass.attributes.name.name]);
+            wakTrello.renameBoard(process.env.appkey, process.env.token, event.entityStorage[event.dataClass.attributes.ID.name], event.entityStorage[event.dataClass.attributes.name.name]);
         }
         catch (e) {
             throw e;
@@ -150,7 +152,7 @@ model.Board.controlMethods.getEntityByKey = function(event) {
     var idBoard = event.key[0];
     try {
 
-        element = wakTrello.getBoardByID(appkey, token, idBoard);
+        element = wakTrello.getBoardByID(process.env.appkey, process.env.token, idBoard);
     }
     catch (e) {
         throw e;
@@ -166,7 +168,7 @@ model.Board.controlMethods.getEntityByKey = function(event) {
 
 model.Board.controlMethods.countEntities = function(event) {
     // I think in event object we should have all entities
-    var coll = wakTrello.getBoards(appkey, token, username);
+    var coll = wakTrello.getBoards(process.env.appkey, process.env.token, process.env.userNameTrello);
     return coll.length
 
 }
@@ -204,9 +206,9 @@ model.List.controlMethods.newEntity = function() {
 model.List.controlMethods.allEntities = function(event) {
         var allLists = [];
         try {
-            wakTrello.getBoards(appkey, token, username).forEach(function(item) {
+            wakTrello.getBoards(process.env.appkey, process.env.token, process.env.userNameTrello).forEach(function(item) {
 
-                wakTrello.getListsOfABoard(appkey, token, item.id).forEach(function(item) {
+                wakTrello.getListsOfABoard(process.env.appkey, process.env.token, item.id).forEach(function(item) {
                     var list = {};
                     list.ID = item.id;
                     list.name = item.name;
@@ -257,7 +259,7 @@ model.List.controlMethods.getEntityByKey = function(event) {
     var idBoard = event.key[0];
     try {
 
-        element = wakTrello.getListByID(appkey, token, idBoard);
+        element = wakTrello.getListByID(process.env.appkey, process.env.token, idBoard);
     }
     catch (e) {
         throw e;
@@ -323,7 +325,7 @@ model.List.controlMethods.queryByString = function(event) {
     if (event.queryString[0] === "+") {
         var elements = [];
         var idBoard = event.queryString.split("+")[1];
-        wakTrello.getListsOfABoard(appkey, token, idBoard).forEach(function(item) {
+        wakTrello.getListsOfABoard(process.env.appkey, process.env.token, idBoard).forEach(function(item) {
             var list = {};
             list.ID = item.id;
             list.name = item.name;
@@ -448,11 +450,11 @@ model.List.controlMethods.queryByCriteria = function(event) {
 model.Card.controlMethods.allEntities = function(event) {
     var allCards = [];
     try {
-        wakTrello.getBoards(appkey, token, username).forEach(function(item) {
+        wakTrello.getBoards(process.env.appkey, process.env.token, process.env.userNameTrello).forEach(function(item) {
 
-            wakTrello.getListsOfABoard(appkey, token, item.id).forEach(function(item) {
+            wakTrello.getListsOfABoard(process.env.appkey, process.env.token, item.id).forEach(function(item) {
 
-                wakTrello.getCardsOfAlist(appkey, token, item.id).forEach(function(item) {
+                wakTrello.getCardsOfAlist(process.env.appkey, process.env.token, item.id).forEach(function(item) {
 
                     var card = {};
                     card.ID = item.id;
@@ -498,7 +500,7 @@ model.Card.controlMethods.getEntityByKey = function(event) {
     var idCard = event.key[0];
     try {
 
-        element = wakTrello.getCardByID(appkey, token, idCard);
+        element = wakTrello.getCardByID(process.env.appkey, process.env.token, idCard);
     }
     catch (e) {
         throw e;
@@ -521,7 +523,7 @@ model.Card.controlMethods.dropEntity = function(event) {
         console.log("drop entity")
         if (event.entityStorage.ID != null) {
             try {
-                wakTrello.deleteCardByID(appkey, token, event.entityStorage.ID);
+                wakTrello.deleteCardByID(process.env.appkey, process.env.token, event.entityStorage.ID);
             }
             catch (e) {
                 throw e;
@@ -534,7 +536,7 @@ model.Card.controlMethods.dropEntities = function(event) {
     var allCards = event.collectionStorage.elements;
     allCards.forEach(function(item) {
         try {
-            wakTrello.deleteCardByID(appkey, token, item.ID)
+            wakTrello.deleteCardByID(process.env.appkey, process.env.token, item.ID)
         }
         catch (e) {
             throw e;
@@ -543,3 +545,62 @@ model.Card.controlMethods.dropEntities = function(event) {
     console.log("dropEntities");
 
 }
+
+
+//Member   Empty Class !
+
+
+
+model.Member.controlMethods.allEntities = function(event) {
+	
+         var elements = [] ;
+       
+        event.collectionStorage.elements = elements;
+    }
+    //getCollectionLength
+model.Member.controlMethods.getCollectionLength = function(event) {
+	
+    return event.collectionStorage.elements.length;
+};
+
+// getEntityByPos
+model.Member.controlMethods.getEntityByPos = function(event) {
+    var pos = event.position;
+    var elements = event.collectionStorage.elements;
+    var element = elements[pos];
+
+    for (var i in element) {
+        event.entityStorage[i] = element[i];
+    }
+};
+// getAttributeValue
+
+model.Member.controlMethods.getAttributeValue = function(event) {
+        if (event.attributeName === 'children') {
+            if(event.onlyLightValue){
+                return {deferred: true};
+            } else {
+            	if(event.entityStorage.ID!=null)
+                return ds.List.query('+' + event.entityStorage.ID)
+            };            
+        } else {
+            return event.entityStorage[event.attributeName];
+        }            
+    };
+
+
+
+model.Member.controlMethods.countEntities = function(event) {
+    // I think in event object we should have all entities
+    var coll =ds.Member.all();
+    return coll.length
+
+}
+
+
+
+
+
+
+
+

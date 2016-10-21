@@ -76,11 +76,6 @@
 
  
 
-(function(){
-	var l =1;
-})
-l
-
 
 
 
