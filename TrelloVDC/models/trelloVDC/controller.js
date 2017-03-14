@@ -1,6 +1,5 @@
-<<<<<<< HEAD
-process.env.appkey="0767b86aac5a73e03d54957171886378" ;
-process.env.token="1fe11ba5b4b498a523b687913ad87278fe38e6c29d16663b008e949f711ff5e9";
+process.env.appkey="ADD YR KEY" ;
+process.env.token="ADD YR TOKEN";
 process.env.userNameTrello='vdctest';
  
  
@@ -8,16 +7,7 @@ process.env.userNameTrello='vdctest';
  var token = process.env.token;
  var username = process.env.userNameTrello;
  var wakTrello = require('wakanda-trello');  
- 
- 
- 
-=======
-
-
- var wakTrello = require('wakanda-trello'); 
-
   
->>>>>>> 8a87d3f92a1e31b4475a2f4d3dd8cfdeec9fee7f
     // Read Bundle ,we should implement  all the methods (4 methods) of read bundle ( there is a dependency between the four methods )
     //allEntities
 model.Board.controlMethods.allEntities = function(event) {
@@ -62,11 +52,7 @@ model.Board.controlMethods.getAttributeValue = function(event) {
                 return {deferred: true};
             } else {
             	if(event.entityStorage.ID!=null)
-<<<<<<< HEAD
-                return trelloVDC.List.query(':' + event.entityStorage.ID)
-=======
                 return ds.List.query('+' + event.entityStorage.ID)
->>>>>>> 8a87d3f92a1e31b4475a2f4d3dd8cfdeec9fee7f
             };            
         } else {
             return event.entityStorage[event.attributeName];
