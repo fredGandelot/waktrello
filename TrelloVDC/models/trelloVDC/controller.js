@@ -1,7 +1,14 @@
+process.env.appkey="0767b86aac5a73e03d54957171886378" ;
+process.env.token="1fe11ba5b4b498a523b687913ad87278fe38e6c29d16663b008e949f711ff5e9";
+process.env.userNameTrello='vdctest';
+ 
+ 
  var appkey = process.env.appkey;
  var token = process.env.token;
  var username = process.env.userNameTrello;
  var wakTrello = require('wakanda-trello');  
+ 
+ 
  
     // Read Bundle ,we should implement  all the methods (4 methods) of read bundle ( there is a dependency between the four methods )
     //allEntities
