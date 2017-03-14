@@ -53,7 +53,7 @@ model.Board.controlMethods.getAttributeValue = function(event) {
                 return {deferred: true};
             } else {
             	if(event.entityStorage.ID!=null)
-                return ds.List.query(':' + event.entityStorage.ID)
+                return trelloVDC.List.query(':' + event.entityStorage.ID)
             };            
         } else {
             return event.entityStorage[event.attributeName];
@@ -261,7 +261,7 @@ model.List.controlMethods.getAttributeValue = function(event) {
 
     if (event.attributeName === 'parent') {
 
-        return ds.Board(event.entityStorage.idBoard);
+        return trelloVDC.Board(event.entityStorage.idBoard);
     }
     else
         return event.entityStorage[event.attributeName];
@@ -375,7 +375,7 @@ model.List.controlMethods.queryByCriteria = function(event) {
 			val = criteria.value.substring(0, criteria.value.length-1);
 		}
       if(beginWith){
-      var lists=ds.List.all();
+      var lists=trelloVDC.List.all();
       
       	
       	lists.forEach(function(item){
@@ -396,7 +396,7 @@ model.List.controlMethods.queryByCriteria = function(event) {
       	})
       }else{
       		
-      	var lists=ds.List.all();
+      	var lists=trelloVDC.List.all();
       	
       	lists.forEach(function(item){
       		var ok=false;
