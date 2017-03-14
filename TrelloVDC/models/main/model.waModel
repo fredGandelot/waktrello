@@ -1,1 +1,47 @@
-{    "toJSON": true,    "dbInfo": [{        "name": "Model",        "uuid": ""    }],    "extraProperties": {        "version": "2",        "classes": {        },        "model": {            "scriptMode": "manual"        }    },    "dataClasses": []}
+{
+	"toJSON": true,
+	"extraProperties": {
+		"version": "2",
+		"classes": {
+			"Class1": {
+				"panelColor": "#70CCC2",
+				"panel": {
+					"isOpen": "true",
+					"position": {
+						"X": 25,
+						"Y": 20
+					},
+					"pathVisible": true
+				}
+			}
+		},
+		"model": {
+			"scriptMode": "manual",
+			"workspaceLeft": 0,
+			"workspaceTop": 0
+		}
+	},
+	"dataClasses": [
+		{
+			"collectionName": "Class1Collection",
+			"className": "Class1",
+			"attributes": [
+				{
+					"name": "ID",
+					"kind": "storage",
+					"type": "long",
+					"autosequence": "true",
+					"unique": "true",
+					"primKey": "true"
+				},
+				{
+					"name": "name",
+					"scope": "public",
+					"type": "string",
+					"kind": "storage"
+				}
+			]
+		}
+	],
+	"type": []
+}

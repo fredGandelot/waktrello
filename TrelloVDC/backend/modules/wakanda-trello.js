@@ -89,7 +89,7 @@ exports.renameCard=function(appkey,token,idCard,value){
     xhr.send();
 	return JSON.parse(xhr.responseText)
 }
-exports.renameBoard=function(appkey,token,idBoard,newName){
+exports.renameBoard=function(appkey,token,idBoard,newName,newDesc){
 
 	var request='https://api.trello.com/1/board/'+idBoard+'/name'+'?key='+appkey+'&token='+token+'&value='+newName;
 	var xhr=new XMLHttpRequest();
